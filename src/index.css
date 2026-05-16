@@ -57,14 +57,10 @@ body {
 }
 
 #root {
-  width: 1126px;
+  width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  margin: 0;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
 }
 
@@ -97,8 +93,8 @@ p {
   margin: 0;
 }
 
-code,
-.counter {
+code
+{
   font-family: var(--mono);
   display: inline-flex;
   border-radius: 4px;
@@ -110,4 +106,43 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+@layer components {
+  .track-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 108px;
+    height: 86px;
+    border-radius: 14px;
+    border: 2px solid #8ea4cc;
+    background: linear-gradient(160deg, #ffffff, #edf2fa);
+    font-weight: 600;
+    color: #263043;
+    cursor: pointer;
+    box-shadow:
+      3px 3px 5px rgba(202, 192, 192, 0.2),
+      -3px -3px 5px rgba(234, 218, 218, 0.5);
+    transform: translateY(5px);
+    transition:
+      transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+      box-shadow 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+      border-color 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+  }
+
+  .track-card:hover {
+    transform: translateY(-6px);
+    border-color: #87de8a;
+    box-shadow: 0 18px 34px rgba(15, 23, 37, 0.12);
+  }
+
+  .selected {
+    transform: translateY(-6px);
+    border-color: #87de8a;
+    box-shadow: 0 18px 34px rgba(15, 23, 37, 0.12);
+  }
 }
