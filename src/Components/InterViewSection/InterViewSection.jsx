@@ -12,7 +12,7 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
   const [submitting, setSubmitting] = useState(false);
   const [offlineQue, setOfflineQue] = useState(false);
   const [offlineIndex, setOfflineIndex] = useState(null);
-
+  const isFetching = React.useRef(false);
   useEffect(()=>{
     let percent = (questionNo/ 5) * 100;
     setProgressBar(Math.min(percent, 100));
@@ -22,8 +22,9 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
 
   useEffect(()=>{
     async function fetchQuestion(){
-      if(currentScreen==='interview'){
-        console.log(questionNo)
+      if (currentScreen !== 'interview' || isFetching.current) return;
+      try{
+        isFetching.current = true;
         setIsLoading(true);
         let fetchedQue = await getQuestion(currentTrack)
 
@@ -71,6 +72,13 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
         }
         setIsLoading(false);
         setQuestion(fetchedQue)
+      }
+      catch(err){
+        console.log('error')
+      }
+      finally{
+        setIsLoading(false);
+        isFetching.current = false;
       }
     }
     fetchQuestion()
@@ -258,7 +266,7 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
           <button
             type="button"
             id="submitAnswerBtn"
-            disabled={(isLoading), (submitting)}
+            disabled={isLoading || submitting}
             onClick={()=>{feed(ans)}}
             
             className="mt-3.5 w-full cursor-not-allowed rounded-full bg-linear-to-r from-[#040e1b] via-[#091a35] to-[#050d1b] px-3.5 py-2.5 text-sm font-bold tracking-wider text-[#f3f8ff] uppercase opacity-70 shadow-[0_10px_20px_rgba(6,13,24,0.25)] enabled:cursor-pointer enabled:opacity-100 enabled:hover:-translate-y-px enabled:hover:shadow-[0_12px_22px_rgba(6,13,24,0.3)]"
