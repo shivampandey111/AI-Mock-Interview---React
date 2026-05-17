@@ -2,7 +2,7 @@ import React from 'react'
 
 
 
-function LandingSection({currentScreen, currentTrack, onTrackSelect}) {
+function LandingSection({currentScreen, currentTrack, onTrackSelect, setCurrentScreen}) {
     const tracks = [
       { id: 'DSA', icon: '◎' },
       { id: 'Web Dev', icon: '</>' },
@@ -60,7 +60,11 @@ function LandingSection({currentScreen, currentTrack, onTrackSelect}) {
           </div>
 
           <button
-            type="button" onClick={currentScreen}
+            type="button" onClick={()=>{
+              if(currentTrack!==null){
+                setCurrentScreen('interview')
+              }
+            }}
             className="inline-flex min-w-44 cursor-pointer items-center justify-center rounded-[10px] bg-linear-to-br from-[#232d3c] to-[#151b24] px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#f3f7ff] shadow-[0_14px_25px_rgba(15,23,37,0.2)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-px hover:shadow-[0_18px_28px_rgba(15,23,37,0.22)]"
           >
             Start Interview
