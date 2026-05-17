@@ -2,9 +2,7 @@ let question;
     export async function getQuestion(currentTrack){
         const prompt = `Generate one junior level ${currentTrack} question for software engineer role. Return only question, nothing else.`
         try {
-            const API_KEY = 'AIzaSyBslww-oSItTFBrvV1owvJnTjP450A-W2o'
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${API_KEY}`
-            const response = await fetch(API_URL, {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -34,9 +32,7 @@ let feedback;
                     - missing: array of what was missing, 3 elements only
                     - ideal: string with the ideal answer summary`
         try {
-            const API_Key = 'AIzaSyBslww-oSItTFBrvV1owvJnTjP450A-W2o'
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${API_Key}`
-        const response = await fetch(API_URL, {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
