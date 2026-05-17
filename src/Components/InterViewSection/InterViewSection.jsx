@@ -20,76 +20,72 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
 
   
 
-  useEffect(() => {
-  async function fetchQuestion() {
-    if (currentScreen !== 'interview' || isFetching.current) return;
-    
-    try {
-      isFetching.current = true;
-      setIsLoading(true);
-      
-      let fetchedQue = await getQuestion(currentTrack);
-
-      // Handle soft errors if the API returns the string 'error' instead of throwing
-      if (fetchedQue === 'error') {
-        throw new Error("API returned soft error string");
-      }
-
-      setQuestion(fetchedQue);
-      setIsLoading(false);
-
-    } catch (err) {
-      console.log('API Failed, switching to offline fallback questions...');
-      
-      const fallbackQuestions = {
-        DSA: [
-          "What is a linked list?",
-          "Explain time complexity of binary search.",
-          "What is a stack and queue?",
-          "What is recursion?"
-        ],
-        Web: [
-          "What is the DOM?",
-          "Difference between let, var, const?",
-          "What is event bubbling?",
-          "What is closure in JavaScript?"
-        ],
-        DBMS: [
-          "What is normalization?",
-          "Difference between SQL and NoSQL?",
-          "What is indexing?"
-        ],
-        OS: [
-          "What is a process vs thread?",
-          "What is deadlock?",
-          "Explain scheduling algorithms."
-        ],
-        CN: [
-          "What happens when you enter a URL in a browser?",
-          "Explain how TCP ensures reliable data transfer.",
-          "What is the difference between a switch and a router?",
-          "What is subnetting and why is it used?"
-        ]
-      };
-
-      const arr = fallbackQuestions[currentTrack] || ["No Questions Available"];
-      const index = Math.floor(Math.random() * arr.length);
-      
-      setOfflineIndex(index);
-      setOfflineQue(true);
-      setQuestion(arr[index]); // Set the offline question safely here
-      setIsLoading(false);
-
-    } finally {
-      // Keep the gate LOCKED for 1 full second to completely kill any micro-render loops
-      setTimeout(() => {
-        isFetching.current = false;
-      }, 1000);
+  useEffect(()=>{
+    async function fetchQuestion(){
+      if (currentScreen !== 'interview') return;
+      if (isFetching.current) {
+      return;
     }
-  }
-  
-  fetchQuestion();
-}, [currentScreen, questionNo]);
+      try{
+        isFetching.current = true;
+        setIsLoading(true);
+        let fetchedQue = await getQuestion(currentTrack)
+
+            //If API throws an error, offline questions
+        if(fetchedQue==='error'){
+          const fallbackQuestions = {
+            DSA: [
+                "What is a linked list?",
+                "Explain time complexity of binary search.",
+                "What is a stack and queue?",
+                "What is recursion?"
+            ],
+            Web: [
+                "What is the DOM?",
+                "Difference between let, var, const?",
+                "What is event bubbling?",
+                "What is closure in JavaScript?"
+            ],
+            DBMS: [
+                "What is normalization?",
+                "Difference between SQL and NoSQL?",
+                "What is indexing?",
+            ],
+            OS: [
+                "What is a process vs thread?",
+                "What is deadlock?",
+                "Explain scheduling algorithms."
+            ],
+            CN: [
+                "What happens when you enter a URL in a browser?",
+                "Explain how TCP ensures reliable data transfer.",
+                "What is the difference between a switch and a router?",
+                "What is subnetting and why is it used?"
+            ]
+          };
+          function getOfflineQue(){
+            const arr = fallbackQuestions[`${currentTrack}`] || ["No Questions Available"]
+            const index = Math.floor(Math.random()*arr.length)
+            setOfflineIndex(index)
+            const fallBack = arr[index];
+            return fallBack;
+          };
+          fetchedQue = getOfflineQue(); 
+          setOfflineQue(true);
+        }
+        setIsLoading(false);
+        setQuestion(fetchedQue)
+      }
+      catch(err){
+        console.log('error')
+      }
+      finally{
+        setIsLoading(false);
+        isFetching.current = false;
+      }
+    }
+    fetchQuestion()
+  }, [currentScreen, questionNo])
 
   let id = 0;
   let FeedbackGen = false;
@@ -156,12 +152,10 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
 
       function fallbackAns(){
           const ans = fallbackAnswers[`${currentTrack}`][offlineIndex]
-          console.log(offlineIndex)
           return ans;
       }
       feedback = fallbackAns()
       setFeedback(feedback);
-      console.log(feedback)
       setIsRetry(false);
 
       sessionData.push({
@@ -174,9 +168,7 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
     }
     
     if(questionNo===5){
-      console.log('is 5')
       setStat(true);
-      console.log(stat)
     }
   }
 
@@ -196,7 +188,6 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
   const skipButtonHandler = () => {
     setSkip(false);
     setQuestionNo(prev=>prev+1)
-    console.log(questionNo)
     setAnswer('')
     setFeedback('')
   }
