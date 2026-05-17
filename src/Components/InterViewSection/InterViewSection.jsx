@@ -22,8 +22,13 @@ function InterViewSection({currentTrack, setQuestionNo, setIsLoading, setQuestio
 
   useEffect(()=>{
     async function fetchQuestion(){
-      if (currentScreen !== 'interview' || isFetching.current) return;
+      if (currentScreen !== 'interview') return;
+      if (isFetching.current) {
+      console.log("🛑 GUARD ACTION: Blocked a duplicate loop call!");
+      return;
+    }
       try{
+        console.log(`🚀 API TRIGGERED: Fetching question #${questionNo} for ${currentTrack}`);
         isFetching.current = true;
         setIsLoading(true);
         let fetchedQue = await getQuestion(currentTrack)
