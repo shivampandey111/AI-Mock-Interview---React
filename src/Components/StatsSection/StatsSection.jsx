@@ -1,8 +1,12 @@
 import React from "react";
 
 function StatsSection({totalQue, currentTrack, progressBar, sessionData, setCurrentScreen, currentScreen}) {
-  console.log(sessionData)
   let id = 0;
+
+  const screen = () => {
+    setCurrentScreen('landing');
+    location.reload();
+  }
   return (
     <section
       id="session-stats-panel"
@@ -13,7 +17,7 @@ function StatsSection({totalQue, currentTrack, progressBar, sessionData, setCurr
         <header className="mb-8">
           <button
             type="button"
-            onClick={()=>{setCurrentScreen('landing')}}
+            onClick={()=>{screen()}}
             className="stats-back-link mb-5 inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[#c9d4e4] bg-linear-to-b from-white to-[#eef2f8] px-3.5 py-2 text-sm font-semibold text-[#2a3a52] shadow-[0_4px_12px_rgba(15,23,37,0.08)] transition hover:-translate-y-px hover:border-[#a8b6c8]"
           >
             ← Back to interview
@@ -66,7 +70,7 @@ function StatsSection({totalQue, currentTrack, progressBar, sessionData, setCurr
               id="yourProgress"
               className="text-[1.65rem] leading-tight font-bold tracking-tight text-[#0f1725]"
             >
-              60%
+              {(totalQue/5)*100}%
             </strong>
             <span className="text-[0.78rem] leading-snug text-[#6b7c92]">
               Questions completed vs plan
@@ -79,7 +83,8 @@ function StatsSection({totalQue, currentTrack, progressBar, sessionData, setCurr
           aria-hidden="true"
         >
           <div
-            className="stats-progress-bar h-full w-[60%] rounded-full bg-linear-to-r from-[#1f4f81] to-[#3d6fa3]"
+            className="stats-progress-bar h-full rounded-full bg-linear-to-r from-[#1f4f81] to-[#3d6fa3]"
+            style={{ width: `${(totalQue/5)*100}%` }}
           />
         </div>
 
