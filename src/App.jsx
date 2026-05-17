@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import LandingSection from './Components/LandingSection/LandingSection.jsx'
 import InterViewSection from './Components/InterViewSection/InterViewSection.jsx'
 import StatsSection from './Components/StatsSection/StatsSection.jsx';
-
+import Popup from './Components/Shared/Popup.jsx';
 
 function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -10,23 +10,18 @@ function App() {
   const [question, setQuestion] = useState('');
   const [ans, setAnswer] = useState('');
   const [sessionData, setSessionData] = useState([]);
-  const [progressBar, setProgressBar] = useState(20);
+  const [progressBar, setProgressBar] = useState(0);
   const [feedback, setFeedBack] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentScreen, setCurrentScreen] = useState('landing');
   const [isRetry, setIsRetry] = useState(false)
   const [stat, setStat] = useState(false)
   const [totalQue, setTotalQue] = useState(1);
-  
+  const [message, setMessage] = useState('');
+
   function onTrackSelect(track){
     let currentTrack = track;
     setCurrentTrack(track);
-  }
-
-  function screen(){
-    if(currentScreen==='landing'){
-    location.reload();
-  }
   }
   
   return ( 
@@ -45,7 +40,7 @@ function App() {
       setIsLoading={setIsLoading}
       setFeedback={setFeedBack}
       sessionData={sessionData}
-      progressBar={20}
+      progressBar={progressBar}
       currentScreen={currentScreen}
       question={question}
       setAnswer={setAnswer}
@@ -60,6 +55,8 @@ function App() {
       setCurrentScreen={setCurrentScreen}
       totalQue={totalQue}
       setTotalQue={setTotalQue}
+      message={message}
+      setProgressBar={setProgressBar}
     />}
     {currentScreen==='stats' && <StatsSection
       totalQue={totalQue}
@@ -67,7 +64,7 @@ function App() {
       progressBar={progressBar}
       sessionData={sessionData}
       currentScreen={currentScreen}
-      setCurrentScreen={screen}
+      setCurrentScreen={setCurrentScreen}
     />}
 
 

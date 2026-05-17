@@ -8,7 +8,7 @@ import InterViewSection from './Components/InterViewSection/InterViewSection.jsx
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
     <App />
-  </StrictMode>,
+  
 )
